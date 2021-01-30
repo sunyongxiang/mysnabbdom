@@ -3,7 +3,8 @@ import patch from './patch.js'
 const vnode1 = h('ul',{},[
     h('li',{},'aaa'),
     h('li',{},'bbb'),
-    h('li',{},'ccc')
+    h('li',{},'ccc'),
+    'ddd'
 ])
 const vnode2 = h('div',{},[
     h('p',{},'天才'),
