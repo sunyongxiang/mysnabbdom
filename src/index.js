@@ -1,16 +1,15 @@
 import {h} from './h.js'
 import patch from './patch.js'
 const vnode1 = h('div',{},[
-    h('p',{},'我'),
-    h('p',{},'是'),
-    h('p',{},'老'),
-    '节点'
+    h('p1',{},'aaa'),
+    h('p1',{},'bbb'),
+    h('p1',{},'ccc'),
+    h('p1',{},'ddd')
 ])
-const vnode2 = h('div',{},[
-    h('p',{},'我'),
-    h('p',{},'是'),
-    h('p',{},'新'),
-    '节点'
+const vnode2 =h('div',{},[
+    h('p1',{},'ddd'),
+    h('p1',{},'ccc'),
+    h('p1',{},'aaa'),
 ])
 var div = document.createElement("div");
 div.setAttribute("id", "contanier");
