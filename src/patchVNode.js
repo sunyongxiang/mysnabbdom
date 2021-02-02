@@ -18,7 +18,11 @@ export default function patchVNode(oldVNode,newVNode){
         let newStartIndex = 0
         let newEndIndex = newVNode.children.length-1
         while(startIndex<=endIndex&&newStartIndex<=newEndIndex){
-            if(sameVNode(oldVNode.children[startIndex],newVNode.children[newStartIndex])){
+            if(oldVNode.children[startIndex]===undefined){
+                startIndex++
+            }else if(oldVNode.children[endIndex]===undefined){
+                endIndex--
+            }else if(sameVNode(oldVNode.children[startIndex],newVNode.children[newStartIndex])){
                 patchVNode(oldVNode.children[startIndex],newVNode.children[newStartIndex])
                 startIndex++
                 newStartIndex++
