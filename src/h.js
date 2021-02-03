@@ -11,7 +11,6 @@ export const h = (sel,data,c)=>{
                 children.push(VNode(undefined,undefined,undefined,d,undefined))
             }
         }
-        console.log(children,'children')
         return VNode(sel,data,children,undefined,undefined)
     }else if(typeof(c)==='object'){
         return VNode(sel,data,[c],undefined,undefined)

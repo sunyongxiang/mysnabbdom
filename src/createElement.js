@@ -4,7 +4,6 @@ export default function createElement(vnode){
         let textNode = document.createTextNode(vnode.text);
         domNode.appendChild(textNode)
     }else if(vnode.children&&vnode.children.length){
-        console.log(vnode.children)
         for(let d of vnode.children){
             if(d.sel){
                 let ch = createElement(d)

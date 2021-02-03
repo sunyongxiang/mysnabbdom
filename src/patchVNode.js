@@ -5,6 +5,7 @@ export default function patchVNode(oldVNode,newVNode){
         return
     }else if(newVNode.text&&(newVNode.children===undefined||newVNode.children.length===0)){
         if(newVNode.text!==oldVNode.text)
+            newVNode.elm = oldVNode.elm
             oldVNode.elm.innerText = newVNode.text
     }else if(oldVNode.children===undefined||oldVNode.children.length===0){
         oldVNode.elm.innerText = ''
@@ -13,6 +14,7 @@ export default function patchVNode(oldVNode,newVNode){
             oldVNode.elm.appendChild(node)
         }
     }else{
+        newVNode.elm = oldVNode.elm
         let startIndex = 0
         let endIndex = oldVNode.children.length-1
         let newStartIndex = 0
@@ -41,28 +43,33 @@ export default function patchVNode(oldVNode,newVNode){
                 newStartIndex++
                 endIndex-- 
             }else{
+                let curIndex = -1
                 for(let i = 0;i<oldVNode.children.length;i++){
                     if(sameVNode(oldVNode.children[i],newVNode.children[newStartIndex])){
-                        patchVnode(oldVNode.children[i], newVNode.children[newStartIndex])
-                        oldVNode.elm.insertBefore(oldVNode.children[endIndex], oldVNode.children[startIndex])
+                        patchVNode(oldVNode.children[i], newVNode.children[newStartIndex])
+                        oldVNode.elm.insertBefore(oldVNode.children[i].elm, oldVNode.children[startIndex].elm)
                         oldVNode.children[i] =undefined
                         newStartIndex++
+                        curIndex = i
                         break
                     }
+                }
+                console.log(curIndex)
+                if(curIndex<0){
+                    const node = createElement(newVNode.children[newStartIndex])
+                    oldVNode.elm.insertBefore(node, oldVNode.children[startIndex].elm)
+                    newStartIndex++
                 }
             }
         }
         if(startIndex>endIndex){
-            console.log(newStartIndex,newEndIndex)
             for(;newStartIndex<=newEndIndex;newStartIndex++){
                 const node = createElement(newVNode.children[newStartIndex])
-                console.log(node)
                 oldVNode.elm.appendChild(node)
             }
-        }
-        else if(newStartIndex>newEndIndex){
+        }else if(newStartIndex>newEndIndex){
             for(;startIndex<=endIndex;startIndex++){
-                if(ldVNode.children[startIndex])
+                if(oldVNode.children[startIndex])
                     oldVNode.elm.removeChild(oldVNode.children[startIndex].elm)
             }
         }
