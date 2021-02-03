@@ -1,11 +1,11 @@
 import createElement from './createElement.js'
 import sameVNode from './sameVNode.js'
 export default function patchVNode(oldVNode,newVNode){
+    newVNode.elm = oldVNode.elm
     if(newVNode===oldVNode){
         return
     }else if(newVNode.text&&(newVNode.children===undefined||newVNode.children.length===0)){
         if(newVNode.text!==oldVNode.text)
-            newVNode.elm = oldVNode.elm
             oldVNode.elm.innerText = newVNode.text
     }else if(oldVNode.children===undefined||oldVNode.children.length===0){
         oldVNode.elm.innerText = ''
