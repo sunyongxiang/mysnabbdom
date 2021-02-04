@@ -1,15 +1,15 @@
 import {h} from './h.js'
 import patch from './patch.js'
 const vnode1 = h('div',{},[
-    h('h1',{key:'aaa'},'aaa'),
-    h('h2',{key:'bbb'},'bbb'),
-    h('h3',{key:'ccc'},'ccc'),
-    h('h4',{key:'ddd'},'ddd')
+    h('p',{key:'aaa'},'aaa'),
+    h('p',{key:'bbb'},'bbb'),
+    h('p',{key:'ccc'},'ccc'),
+    h('p',{key:'ddd'},'ddd')
 ])
 const vnode2 =h('div',{},[
-    h('p1',{key:'aaa'},'aaa'),
-    h('p1',{key:'fff'},'fff'),
-    h('p1',{key:'ccc'},'ccc'),
+    h('p',{key:'aaa'},'aaa'),
+    h('p',{key:'fff'},'fff'),
+    h('p',{key:'ccc'},'ccc'),
 ])
 var div = document.createElement("div");
 div.setAttribute("id", "contanier");

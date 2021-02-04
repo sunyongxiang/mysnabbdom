@@ -1,5 +1,6 @@
 import createElement from './createElement.js'
 import sameVNode from './sameVNode.js'
+import createKeyToOldIdx from './createKeyToOldIdx.js'
 export default function patchVNode(oldVNode,newVNode){
     newVNode.elm = oldVNode.elm
     if(newVNode===oldVNode){
@@ -19,6 +20,7 @@ export default function patchVNode(oldVNode,newVNode){
         let endIndex = oldVNode.children.length-1
         let newStartIndex = 0
         let newEndIndex = newVNode.children.length-1
+        let oldKeyToIdx , idxInOld
         while(startIndex<=endIndex&&newStartIndex<=newEndIndex){
             if(oldVNode.children[startIndex]===undefined){
                 startIndex++
@@ -43,23 +45,26 @@ export default function patchVNode(oldVNode,newVNode){
                 newStartIndex++
                 endIndex-- 
             }else{
-                let curIndex = -1
-                for(let i = 0;i<oldVNode.children.length;i++){
-                    if(sameVNode(oldVNode.children[i],newVNode.children[newStartIndex])){
-                        patchVNode(oldVNode.children[i], newVNode.children[newStartIndex])
-                        oldVNode.elm.insertBefore(oldVNode.children[i].elm, oldVNode.children[startIndex].elm)
-                        oldVNode.children[i] =undefined
-                        newStartIndex++
-                        curIndex = i
-                        break
-                    }
+                if(!oldKeyToIdx){
+                    oldKeyToIdx = createKeyToOldIdx(oldVNode.children,startIndex,endIndex)
                 }
-                console.log(curIndex)
-                if(curIndex<0){
+                idxInOld =newVNode.children[newStartIndex].key ? oldKeyToIdx[newVNode.children[newStartIndex].key]
+                : findIdxInOld(newVNode.children[newStartIndex], oldCh, startIndex, endIndex)
+                if (!idxInOld) { 
                     const node = createElement(newVNode.children[newStartIndex])
                     oldVNode.elm.insertBefore(node, oldVNode.children[startIndex].elm)
-                    newStartIndex++
+                } else {
+                    let vnodeToMove = oldVNode.children[idxInOld]
+                    if (sameVNode(oldVNode.children[idxInOld], newVNode.children[newStartIndex])) {
+                        patchVNode(oldVNode.children[idxInOld], newVNode.children[newStartIndex])
+                        oldCh[idxInOld] = undefined
+                        oldVNode.elm.insertBefore(oldVNode.children[i].elm, oldVNode.children[startIndex].elm)
+                    } else {
+                        const node = createElement(newVNode.children[newStartIndex])
+                        oldVNode.elm.insertBefore(node, oldVNode.children[startIndex].elm)
+                    }
                 }
+                newStartIndex++
             }
         }
         if(startIndex>endIndex){

@@ -2,7 +2,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports  ={
     entry:'./src/index.js',
     output:{
-        publicPath:'/invoice',
+        publicPath:'/',
         filename:'app.js'
     },
     devtool:"source-map",
